@@ -41,7 +41,7 @@ export async function saveEmployee(req, res) {
 // READ - Get all employees
 export async function getEmployees(req, res) {
   try {
-    const employees = await Employee.find().sort({  _id: -1});
+    const employees = await Employee.find().sort({  _id: 1});
     res.json(employees);
   } catch (error) {
     res.status(500).json({
@@ -128,10 +128,12 @@ export async function searchEmployee(req, res) {
   try {
     const employees = await Employee.find({
       $or: [
+        { employeeId: { $regex: query, $options: "i" } }, 
         { firstName: { $regex: query, $options: "i" } },
         { lastName: { $regex: query, $options: "i" } },
         { position: { $regex: query, $options: "i" } },
         { department: { $regex: query, $options: "i" } },
+
       ],
     });
 
